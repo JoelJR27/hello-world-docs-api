@@ -1,5 +1,14 @@
+/*
+  Warnings:
+
+  - You are about to drop the column `validationToken` on the `User` table. All the data in the column will be lost.
+
+*/
 -- CreateEnum
 CREATE TYPE "TokenType" AS ENUM ('EMAIL_VERIFICATION', 'PASSWORD_RESET', 'CHANGE_EMAIL');
+
+-- AlterTable
+ALTER TABLE "User" DROP COLUMN "validationToken";
 
 -- CreateTable
 CREATE TABLE "ValidationToken" (
