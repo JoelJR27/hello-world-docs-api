@@ -15,19 +15,20 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  username  String
-  email     String   @unique
-  password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  checked DateTime? 
-  validationToken String? @default(uuid())
+  id              String    @id @default(cuid())
+  username        String
+  email           String    @unique
+  password        String
+  role            Role      @default(USER)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  checked         DateTime?
+  validationToken String?   @default(uuid())
 
-  refreshTokens RefreshToken[]
-  comments      Comment[]
-  ratings       Rating[]
+  refreshTokens    RefreshToken[]
+  comments         Comment[]
+  ratings          Rating[]
+  validationTokens ValidationToken[]
 }
 
 model RefreshToken {
@@ -129,4 +130,20 @@ model Rating {
   article Article @relation(fields: [articleId], references: [id])
 
   @@unique([userId, articleId])
+}
+
+enum TokenType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+  CHANGE_EMAIL
+}
+
+model ValidationToken {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  type      TokenType
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
 }
