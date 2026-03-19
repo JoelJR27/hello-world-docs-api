@@ -3,7 +3,7 @@ import { zStringSanitized } from "../../../utils/z-string-sanitized.js";
 
 
 export const createUserRequestSchema = z.object({
-    username: zStringSanitized("Insira um nome de usuário válido!").pipe(z.string().min(3, { error: "O nome de usuário deve conter ao menos 3 caracteres." })
+    username: zStringSanitized("Insira um nome de usuário válido!").pipe(z.string({ error: "Formato inválido para o nome de usuário!" }).min(3, { error: "O nome de usuário deve conter ao menos 3 caracteres." })
         .regex(/^\S+$/, {
             error: "O nome de usuário não pode conter espaços.",
         }).regex(/[a-zA-Z]/, { error: "O username deve conter ao menos 1 letra." })),
