@@ -84,7 +84,7 @@ model Article {
 model ArticleVersion {
   id        String   @id @default(cuid())
   articleId String
-  version   Int
+  version   Decimal
   createdAt DateTime @default(now())
 
   article  Article          @relation(fields: [articleId], references: [id])
