@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { AbstractDTO } from "../../../shared/utils/abstract.dto.js";
 
-const loginSchema = z.object({
+export const loginSchema = z.object({
     email: z.email({ error: "Email inválido." }).trim().max(255, { error: "O email deve ter no máximo 255 caracteres." }),
     password: z
         .string({ error: "A senha deve ser do formato texto." })
