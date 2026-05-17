@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { AbstractDTO } from "../../../shared/utils/abstract.dto.js";
+import type { Prisma } from "../../../../generated/prisma/browser.js";
 
 export const loginSchema = z.object({
     email: z.email({ error: "Email inválido." }).trim().max(255, { error: "O email deve ter no máximo 255 caracteres." }),
@@ -14,9 +15,19 @@ export const loginSchema = z.object({
         }).max(25, { error: "A senha deve ter no máximo 25 caracteres." })
 })
 
-export class LoginDTO extends AbstractDTO<typeof loginSchema> {
+type LoginDTOType = z.infer<typeof loginSchema>
+
+export class LoginDTO extends AbstractDTO<typeof loginSchema, LoginDTOType> {
 
     rules() {
         return loginSchema
+    }
+
+
+    toPrisma(): LoginDTOType {
+        return {
+            email: this.data.email,
+            password: this.data.password
+        }
     }
 }
