@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-
 import { ValidationError } from "../errors/validation-error.js";
+import { PrismaError } from "../errors/prisma.error.js";
 
 export default function errorHandler(error: Error, _request: Request, response: Response, next: NextFunction): Response {
     if (error instanceof ValidationError) {
@@ -10,8 +10,13 @@ export default function errorHandler(error: Error, _request: Request, response: 
             issues: error.issues
         })
     }
-
-    //TODO: Verificar se o erro é um PrismaError e retornar um status code adequado
+    
+    if(error instanceof PrismaError) {
+        return response.status(error.statusCode).send({
+            status: "error",
+            message: error.message
+        })
+    }
 
     return response.status(500).send({
         status: "error",
