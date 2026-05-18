@@ -1,10 +1,11 @@
 import { z, type ZodType } from "zod";
 import { ValidationError } from "../errors/validation-error.js"; 
 import { AppError } from "../errors/app-error.js";
+import type { Prisma } from "../../../generated/prisma/client.js";
 
 type ReceivedData = Record<string, unknown>;
 
-export abstract class AbstractDTO<Schema extends ZodType> {
+export abstract class AbstractDTO<Schema extends ZodType, PD> {
     protected data: z.infer<Schema> = {} as z.infer<Schema>;
 
     public constructor(data: ReceivedData) {
@@ -12,6 +13,7 @@ export abstract class AbstractDTO<Schema extends ZodType> {
     }
 
     protected abstract rules(): Schema
+    protected abstract toPrisma(): PD
 
     getAll(): z.infer<Schema> {
         return this.data
